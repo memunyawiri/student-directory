@@ -21,26 +21,25 @@ def input_students
   end
 
 def print_header
-  puts "The students of Villains Academy"
-  puts "_______________"
+  puts "The students of Villains Academy".center(65)
+  puts "_______________".center(65)
 end
 
-def print(students)
-  students.to_enum.with_index(1).each do |student, i|
-    puts "#{i}. #{student[:name]} (#{student[:cohort]} cohort)"
+def print_centered(students)
+  students.to_enum.with_index(1).each do |student, index|
+    puts "#{index}. #{student[:name]} (#{student[:cohort]} cohort)".center(65)
   end
 end
 
-
 def print_footer(students)
   if students.count <= 1
-  puts "Overall, we have #{students.count} great student"
+  puts "Overall, we have #{students.count} great student".center(65)
 else
-  puts "Overall, we have #{students.count} great students"
+  puts "Overall, we have #{students.count} great students".center(65)
   end
 end
 
 students = input_students
 print_header
-print(students)
+print_centered(students)
 print_footer(students)
