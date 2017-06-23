@@ -25,9 +25,9 @@ def print_header
   puts "_______________".center(65)
 end
 
-def print_centered(students,letter)
+def print_centered(students, chars)
   students.each.with_index(1) do |student, index|
-  if student[:name][0] == letter
+  if student[:name].length <= chars
       puts "#{index}. #{student[:name]} (#{student[:cohort]} cohort)".center(65)
     end
   end
@@ -44,5 +44,5 @@ end
 
 students = input_students
 print_header
-print_centered(students, "T")
+print_centered(students, 12)
 print_footer(students)
