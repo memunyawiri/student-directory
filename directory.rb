@@ -27,8 +27,9 @@ end
 
 def print_centered(students, chars)
   students.each.with_index(1) do |student, index|
-  if student[:name].length <= chars
+  while student[:name].length < chars
       puts "#{index}. #{student[:name]} (#{student[:cohort]} cohort)".center(65)
+      break
     end
   end
 end
