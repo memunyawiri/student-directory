@@ -31,7 +31,7 @@ def input_students
     name = gets.chomp
 
   end
-  
+
   if students.length == 0
     exit
   else
@@ -44,15 +44,14 @@ def print_header
   puts "-------------".center(85)
 end
 
-def print_centered(students, chars = 12)
+def print_centered(students, cohort = "July")
   i = 0
   students.each do |student|
-    if student[:name].length < chars
-      puts "#{student[:name]}, age: #{student[:age]}, from: #{student[:location]} (#{student[:cohort]} cohort)".center(85)
+    if student[:cohort].empty?
+      puts "#{student[:name]}, age: #{student[:age]}, from: #{student[:location]} (#{cohort.to_s} cohort)".center(85)
       i += 1
     end
   end
-  puts "We have #{i} students that have a name, that is less than 12 characters.".center(85)
 end
 
 def print_footer(students)
