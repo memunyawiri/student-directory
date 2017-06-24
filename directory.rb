@@ -9,41 +9,37 @@ def input_students
   while !name.empty? do
 
     students << {name: name, cohort: :november}
-    if students.count <= 1
-    puts "Now we have #{students.count} student"
-  else
     puts "Now we have #{students.count} students"
-  end
+
     name = gets.chomp
   end
 
   students
-  end
+end
 
 def print_header
-  puts "The students of Villains Academy".center(65)
-  puts "_______________".center(65)
+  puts "The students of Villains Academy".center(85)
+  puts "-------------".center(85)
 end
 
-def print_centered(students, chars)
-  students.each.with_index(1) do |student, index|
-  while student[:name].length < chars
-      puts "#{index}. #{student[:name]} (#{student[:cohort]} cohort)".center(65)
-      break
+def print_centered(students, chars = 12)
+  i = 0
+  students.each do |student|
+    if student[:name].length < chars
+      puts "#{student[:name]}".center(85)
+      i += 1
     end
   end
+  puts "We have #{i} students that have a name, that is less than 12 characters.".center(85)
 end
-
 
 def print_footer(students)
-  if students.count <= 1
-  puts "Overall, we have #{students.count} great student".center(65)
-    else
-      puts "Overall, we have #{students.count} great students".center(65)
-  end
+  puts "Overall, we have #{students.count} great students".center(85)
 end
+
 
 students = input_students
 print_header
-print_centered(students, 12)
+print_centered(students)
 print_footer(students)
+puts
