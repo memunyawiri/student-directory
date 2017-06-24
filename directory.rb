@@ -22,15 +22,12 @@ def print_header
   puts "-------------".center(85)
 end
 
-def print_centered(students, chars = 12)
+def print_with_while(students)
   i = 0
-  students.each do |student|
-    if student[:name].length < chars
-      puts "#{student[:name]}".center(85)
-      i += 1
-    end
+  while i < students.length
+    puts "#{students[i][:name]}".center(85)
+    i += 1
   end
-  puts "We have #{i} students that have a name, that is less than 12 characters.".center(85)
 end
 
 def print_footer(students)
@@ -40,6 +37,6 @@ end
 
 students = input_students
 print_header
-print_centered(students)
+print_with_while(students)
 print_footer(students)
 puts
