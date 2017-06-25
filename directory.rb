@@ -1,11 +1,10 @@
 def input_students
-  puts "Please enter the name of the student"
-  puts "To move on, just hit return twice"
+  puts "Please enter the names of the students"
+  puts "To finish, just hit return twice"
 
   students = []
+
   name = gets.chomp
-
-
 
   while !name.empty? do
     puts "How old are you?"
@@ -31,8 +30,9 @@ def input_students
     name = gets.chomp
 
   end
-
+# Added if statement below to exit the code if no students are entered.
   if students.length == 0
+    puts "NOTICE: You have not entered any students, please try again."
     exit
   else
     students
@@ -61,6 +61,6 @@ end
 
 students = input_students
 print_header
-print_centered(students)
+print_students_list(students)
 print_footer(students)
 puts
