@@ -11,7 +11,7 @@ end
 def interactive_menu
   loop do
     print_menu
-    process(STDIN.gets.chomp)
+    process(STDIN.gets.delete("\n"))
   end
 end
 
@@ -34,17 +34,32 @@ end
 
 def input_students
   puts "Please enter the names of the students"
-  puts "To finish, just hit return twice"
-  # get the first name
-  name = STDIN.gets.chomp
-  # while the name is not empty, repeat this code
-  while !name.empty? do
-    # add the student hash to the array
-    @students << {name: name, cohort: :november}
-    puts "Now we have #{@students.count} students"
-    # get another name from the user
-    name = STDIN.gets.chomp
+  name = STDIN.gets.delete("\n")
+  while !name.empty?
+    print "Age: "
+    age = STDIN.gets.delete("\n")
+    print "City of residence: "
+    c_o_r = STDIN.gets.delete("\n")
+    re_enter = "r"
+    while re_enter == "r"
+      print "Cohort: "
+      cohort = STDIN.gets.delete("\n")
+      @students << {name: name, age: age, c_o_r: c_o_r, cohort: :july}
+      if cohort.empty?
+        cohort = "July"
+      end
+      puts "It looks like you have typed in your cohort incorrectly, to re-enter type 'r' and hit return or to continue hit return only."
+      re_enter = STDIN.gets.delete("\n")
+    end
+    if @students.count == 1
+      puts "Now we have #{@students.count} student"
+    else
+      puts "Now we have #{@students.count} students"
+    end
+    puts "Please enter the next student"
+    name = STDIN.gets.delete("\n")
   end
+  @students
 end
 
 def show_students
@@ -54,18 +69,23 @@ def show_students
 end
 
 def print_header
-  puts "The students of Villains Academy".center(85)
-  puts "-------------".center(85)
+  puts "The students of Villains Academy".center(65)
+  puts "-------------".center(65)
 end
 
 def print_student_list
+  @students.sort_by! { |student| :cohort }
   @students.each do |student|
-    puts "#{student[:name]} (#{student[:cohort]} cohort)"
+    puts ("Name: #{student[:name]}".center(65))
+    puts ("Age: #{student[:age]}".center(65))
+    puts ("City of Residence: #{student[:c_o_r]}".center(65))
+    puts ("Cohort: #{student[:cohort]}".center(65))
+    puts
   end
 end
 
 def print_footer
-  puts "Overall, we have #{@students.count} great students"
+  puts ("Overall, we have #{@students.count} great students".center(65))
 end
 
 def save_students
@@ -73,7 +93,7 @@ def save_students
   file = File.open("students.csv", "w")
   # iterate over the array of students
   @students.each do |student|
-    student_data = [student[:name], student[:cohort]]
+    student_data = [student[:name], age[:age], c_o_r[:c_o_r], student[:cohort]]
     csv_line = student_data.join(',')
     file.puts csv_line
   end
