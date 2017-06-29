@@ -1,18 +1,19 @@
 @students = [] #an empty array accessible to all methods
 
-def print_menu
-  puts "1. Input the students"
-  puts "2. Show the students"
-  puts "3. Save the list to students.csv"
-  puts "4. Load the list from students.csv"
-  puts "9. Exit" # 9 because we'll be adding more items
-end
-
 def interactive_menu
   loop do
     print_menu
     process(STDIN.gets.delete("\n"))
   end
+end
+
+def print_menu
+  puts "Please select and type in a number from the following options:"
+  puts "1. Input the students"
+  puts "2. Show the students"
+  puts "3. Save the list to students.csv"
+  puts "4. Load the list from students.csv"
+  puts "9. Exit" # 9 because we'll be adding more items
 end
 
 def process(selection)
@@ -28,7 +29,7 @@ def process(selection)
     when "9"
       exit
     else
-      puts "I don't know what you mean, please try again"
+      puts "I'm afraid '#{selection}'' isn't an option, please try again."
   end
 end
 
@@ -105,7 +106,7 @@ end
 def load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
-  name, cohort = line.chomp.split(',')
+  name, age, c_o_r, cohort = line.chomp.split(',')
     add_to_students(name, age, c_o_r, cohort)
   end
   file.close
@@ -116,8 +117,12 @@ def try_load_students
   if filename.nil?
     load_students
     puts "Loaded #{@students.count} from students.csv"
-    return
+  else
+    loaded_file_exists(filename)
   end
+end
+
+def loaded_file_exists(filename)
   if File.exists?(filename) # if it exists
     load_students(filename)
     puts "Loaded #{@students.count} from #{filename}"
