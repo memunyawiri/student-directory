@@ -32,6 +32,10 @@ def process(selection)
   end
 end
 
+def add_to_students(name, age, c_o_r, cohort)
+  @students << {name: name, age: age, c_o_r: c_o_r, cohort: cohort.to_s.to_sym}
+end
+
 def input_students
   puts "Please enter the names of the students"
   name = STDIN.gets.delete("\n")
@@ -42,7 +46,7 @@ def input_students
     c_o_r = STDIN.gets.delete("\n")
     print "Cohort: "
     cohort = STDIN.gets.delete("\n")
-    @students << {name: name, age: age, c_o_r: c_o_r, cohort: cohort}
+    add_to_students(name, age, c_o_r, cohort)
     if @students.count == 1
       puts "Now we have #{@students.count} student"
     else
@@ -102,7 +106,7 @@ def load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
   name, cohort = line.chomp.split(',')
-    @students << {name: name, cohort: cohort.to_s.to_sym}
+    add_to_students(name, age, c_o_r, cohort)
   end
   file.close
 end
@@ -119,10 +123,6 @@ def try_load_students
   end
 end
 
-@students = input_students
-print_header
-print_student_list
-print_footer
 
-#try_load_students
-#interactive_menu
+try_load_students
+interactive_menu
