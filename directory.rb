@@ -40,17 +40,9 @@ def input_students
     age = STDIN.gets.delete("\n")
     print "City of residence: "
     c_o_r = STDIN.gets.delete("\n")
-    re_enter = "r"
-    while re_enter == "r"
-      print "Cohort: "
-      cohort = STDIN.gets.delete("\n")
-      @students << {name: name, age: age, c_o_r: c_o_r, cohort: :july}
-      if cohort.empty?
-        cohort = "July"
-      end
-      puts "It looks like you have typed in your cohort incorrectly, to re-enter type 'r' and hit return or to continue hit return only."
-      re_enter = STDIN.gets.delete("\n")
-    end
+    print "Cohort: "
+    cohort = STDIN.gets.delete("\n")
+    @students << {name: name, age: age, c_o_r: c_o_r, cohort: cohort}
     if @students.count == 1
       puts "Now we have #{@students.count} student"
     else
@@ -59,7 +51,12 @@ def input_students
     puts "Please enter the next student"
     name = STDIN.gets.delete("\n")
   end
-  @students
+  if @students.length == 0
+    puts "NOTICE: You have not entered any students, please try again."
+    exit
+  else
+    @students
+  end
 end
 
 def show_students
@@ -70,22 +67,23 @@ end
 
 def print_header
   puts "The students of Villains Academy".center(65)
-  puts "-------------".center(65)
+  puts "------------------------".center(65)
 end
 
 def print_student_list
   @students.sort_by! { |student| :cohort }
   @students.each do |student|
-    puts ("Name: #{student[:name]}".center(65))
-    puts ("Age: #{student[:age]}".center(65))
-    puts ("City of Residence: #{student[:c_o_r]}".center(65))
-    puts ("Cohort: #{student[:cohort]}".center(65))
     puts
+    puts "Name: #{student[:name]}".center(65)
+    puts "Age: #{student[:age]}".center(65)
+    puts "City of Residence: #{student[:c_o_r]}".center(65)
+    puts "Cohort: #{student[:cohort]}".center(65)
   end
 end
 
 def print_footer
-  puts ("Overall, we have #{@students.count} great students".center(65))
+  puts
+  puts "Overall, we have #{@students.count} great students".center(65)
 end
 
 def save_students
@@ -121,5 +119,10 @@ def try_load_students
   end
 end
 
-try_load_students
-interactive_menu
+@students = input_students
+print_header
+print_student_list
+print_footer
+
+#try_load_students
+#interactive_menu
