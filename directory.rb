@@ -95,7 +95,7 @@ def save_students
   file = File.open("students.csv", "w")
   # iterate over the array of students
   @students.each do |student|
-    student_data = [student[:name], age[:age], c_o_r[:c_o_r], student[:cohort]]
+    student_data = [student[:name], student[:age], student[:c_o_r], student[:cohort]]
     csv_line = student_data.join(',')
     file.puts csv_line
   end
@@ -113,7 +113,11 @@ end
 
 def try_load_students
   filename = ARGV.first # first argument from the command line
-  return if filename.nil? # get out of the method if it isn't given
+  if filename.nil?
+    load_students
+    puts "Loaded #{@students.count} from students.csv"
+    return
+  end
   if File.exists?(filename) # if it exists
     load_students(filename)
     puts "Loaded #{@students.count} from #{filename}"
