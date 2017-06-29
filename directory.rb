@@ -9,10 +9,10 @@ end
 
 def print_menu
   puts "Please select and type in a number from the following options:"
-  puts "1. Input the students"
-  puts "2. Show the students"
-  puts "3. Save the list to students.csv"
-  puts "4. Load the list from students.csv"
+  puts "1. Input the student data"
+  puts "2. Show the current list of students"
+  puts "3. Save the list of students"
+  puts "4. Load the list of students"
   puts "9. Exit" # 9 because we'll be adding more items
 end
 
@@ -53,14 +53,12 @@ def input_students
     else
       puts "Now we have #{@students.count} students"
     end
-    puts "Please enter the next student"
+    puts "Please enter the next student, or hit enter to finish."
     name = STDIN.gets.delete("\n")
   end
   if @students.length == 0
     puts "NOTICE: You have not entered any students, please try again."
     exit
-  else
-    @students
   end
 end
 
@@ -72,7 +70,7 @@ end
 
 def print_header
   puts "The students of Villains Academy".center(65)
-  puts "------------------------".center(65)
+  puts "-------------------------------------------".center(65)
 end
 
 def print_student_list
@@ -89,36 +87,57 @@ end
 def print_footer
   puts
   puts "Overall, we have #{@students.count} great students".center(65)
+  puts
 end
 
 def save_students
-  #open the file for writing
-  file = File.open("students.csv", "w")
-  # iterate over the array of students
-  @students.each do |student|
-    student_data = [student[:name], student[:age], student[:c_o_r], student[:cohort]]
-    csv_line = student_data.join(',')
-    file.puts csv_line
+  count = 0
+  require 'csv'
+  CSV.open(filename, "w") do |file|
+    @students.each do |student|
+      student_data = [student[:name], student[:age], student[:c_o_r], student[:cohort]]
+      file.puts student_data
+      count += 1
+    end
   end
-  file.close
+  puts "-----------------------------------".center(65)
+  puts "#{count} students saved to '#{filename}'".center(65)
+  puts "-----------------------------------".center(65)
 end
 
 def load_students(filename = "students.csv")
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
-  name, age, c_o_r, cohort = line.chomp.split(',')
+  count = 0
+  require 'csv'
+  CSV.open(filename, "r").readlines.each do |line|
+    name, age, c_o_r, cohort = line
     add_to_students(name, age, c_o_r, cohort)
+    count += 1
   end
-  file.close
+  puts "------------------------------------------".center(65)
+  puts "#{count} students loaded from '#{filename}'".center(65)
+  puts "-------------------------------------------".center(65)
 end
 
 def try_load_students
   filename = ARGV.first # first argument from the command line
   if filename.nil?
     load_students
-    puts "Loaded #{@students.count} from students.csv"
   else
     loaded_file_exists(filename)
+  end
+end
+
+def save_file
+  puts "Please enter the file you would like to save the student data to"
+  filename = STDIN.gets.delete("\n")
+  while !filename.empty?
+    if File.exists?(filename)
+      save_students(filename)
+      break
+    else
+      puts "Sorry, '#{filename}' doesn't exist, please re-enter or hit enter to continue."
+      filename = STDIN.gets.delete("\n")
+    end
   end
 end
 
@@ -129,6 +148,20 @@ def loaded_file_exists(filename)
   else # if it doesn't exists
     puts "Sorry, #{filename} doesn't exist."
     exit # quit the program
+  end
+end
+
+def load_file
+  puts "Please enter the file you'd like to load the data from"
+  filename = STDIN.gets.delete("\n")
+  while !filename.empty?
+    if File.exists?(filename)
+      load_students(filename)
+      break
+    else
+      puts "Sorry, #{filename} doesn't exist. Please enter it again or hit enter to continue."
+      filename = STDIN.gets.delete("\n")
+    end
   end
 end
 
